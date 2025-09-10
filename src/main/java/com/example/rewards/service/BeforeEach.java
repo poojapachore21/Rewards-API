@@ -1,5 +1,5 @@
 package com.example.rewards.service;
 
-public @interface SpringBootTest {
+public @interface BeforeEach {
 
 }
