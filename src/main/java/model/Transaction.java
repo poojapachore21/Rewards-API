@@ -1,4 +1,4 @@
-package com.example.rewards.service;
+package model;
 
 import java.time.LocalDate;
 
@@ -9,18 +9,16 @@ public class Transaction {
     }
 
     public Object getCustomerId() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getCustomerId'");
+        // throw new UnsupportedOperationException("Unimplemented method
+        // 'getCustomerId'");
     }
 
     public LocalDate getDate() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getDate'");
+        // throw new UnsupportedOperationException("Unimplemented method 'getDate'");
     }
 
-    public Object getAmount() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAmount'");
+    public double getAmount() {
+        // throw new UnsupportedOperationException("Unimplemented method 'getAmount'");
     }
 
 }
