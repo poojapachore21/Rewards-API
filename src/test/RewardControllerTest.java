@@ -1,0 +1,103 @@
+package com.example.rewards.controller;
+
+import com.example.rewards.model.Customer;
+import com.example.rewards.model.Transaction;
+import com.example.rewards.service.RewardService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@WebMvcTest
+public class RewardControllerTest {
+
+    private MockMvc mockMvc;
+
+    @Mock
+    private RewardService rewardService;
+
+    @InjectMocks
+    private RewardController rewardController;
+
+    private Customer testCustomer;
+    private List<Transaction> transactions;
+
+    @BeforeEach
+    public void setup() {
+        MockitoAnnotations.openMocks(this);
+        mockMvc = MockMvcBuilders.standaloneSetup(rewardController).build();
+
+        // Sample Customer
+        testCustomer = new Customer();
+        testCustomer.setId(1L);
+        testCustomer.setName("John Doe");
+
+        // Sample Transactions
+        transactions = Arrays.asList(
+                new Transaction(1L, testCustomer.getId(), 120.0, LocalDate.of(2025, 6, 15)),
+                new Transaction(2L, testCustomer.getId(), 75.0, LocalDate.of(2025, 7, 10)),
+                new Transaction(3L, testCustomer.getId(), 45.0, LocalDate.of(2025, 8, 5))
+        );
+    }
+
+    @Test
+    public void testCalculateRewardsForCustomer() throws Exception {
+        // Mock the service response
+        Map<String, Object> mockResponse = Map.of(
+                "customerId", testCustomer.getId(),
+                "customerName", testCustomer.getName(),
+                "monthlyRewards", Map.of(
+                        "June", 90,
+                        "July", 25,
+                        "August", 0
+                ),
+                "totalRewards", 115
+        );
+
+        when(rewardService.calculateRewards(testCustomer.getId(), "2025-06-01", "2025-08-31"))
+                .thenReturn(mockResponse);
+
+        // Perform GET request
+        mockMvc.perform(get("/api/rewards")
+                        .param("customerId", "1")
+                        .param("startDate", "2025-06-01")
+                        .param("endDate", "2025-08-31")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.customerId").value(1))
+                .andExpect(jsonPath("$.customerName").value("John Doe"))
+                .andExpect(jsonPath("$.monthlyRewards.June").value(90))
+                .andExpect(jsonPath("$.monthlyRewards.July").value(25))
+                .andExpect(jsonPath("$.monthlyRewards.August").value(0))
+                .andExpect(jsonPath("$.totalRewards").value(115));
+    }
+
+    @Test
+    public void testCalculateRewards_InvalidCustomerId() throws Exception {
+        when(rewardService.calculateRewards(999L, "2025-06-01", "2025-08-31"))
+                .thenThrow(new IllegalArgumentException("Customer not found"));
+
+        mockMvc.perform(get("/api/rewards")
+                        .param("customerId", "999")
+                        .param("startDate", "2025-06-01")
+                        .param("endDate", "2025-08-31")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error").value("Customer not found"));
+    }
+}
