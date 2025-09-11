@@ -1,14 +1,22 @@
-package com.example.rewards.service;
-
-import com.example.rewards.dto.RewardResponseDTO;
-import org.springframework.stereotype.Service;
+package rewards.service;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.*;
 
+import org.springframework.stereotype.Service;
+
+import controller.RewardResponseDTO;
+import example.rewards.model.Transaction;
+import repository.TransactionRepository;
+import util.RewardCalculator;
+
 @Service
 public class RewardService {
+
+    public RewardService(TransactionRepository transactionRepository) {
+        // TODO Auto-generated constructor stub
+    }
 
     // Simulated transaction data
     private List<Transaction> getAllTransactions() {
@@ -24,7 +32,7 @@ public class RewardService {
         List<Transaction> all = getAllTransactions();
         Map<YearMonth, Integer> monthlyPoints = new HashMap<>();
         int totalPoints = 0;
-        List<com.example.rewards.dto.Transaction> customerTxns = new ArrayList<>();
+        List<example.rewards.model.Transaction> customerTxns = new ArrayList<>();
 
         for (Transaction txn : all) {
             if (txn.getCustomerId().equals(customerId) &&
@@ -36,10 +44,20 @@ public class RewardService {
 
                 monthlyPoints.put(ym, monthlyPoints.getOrDefault(ym, 0) + points);
                 totalPoints += points;
-                customerTxns.addAll((Collection<? extends com.example.rewards.dto.Transaction>) txn);
+                customerTxns.addAll((Collection<? extends example.rewards.model.Transaction>) txn);
             }
         }
 
-        return new RewardResponseDTO(customerId, monthlyPoints, totalPoints, customerTxns);
+        return new RewardResponseDTO(null, null, totalPoints);
+    }
+
+    public RewardResponse calculateMonthlyRewards(String customerId, LocalDate start, LocalDate end) {
+        // throw new UnsupportedOperationException("Unimplemented method
+        // 'calculateMonthlyRewards'");
+    }
+
+    public long calculateTotalPoints(String customerId, LocalDate start, LocalDate end) {
+        // throw new UnsupportedOperationException("Unimplemented method
+        // 'calculateTotalPoints'");
     }
 }
