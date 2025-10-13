@@ -1,0 +1,56 @@
+{
+	"info": {
+		"_postman_id": "4b3c7144-8ef5-4bf2-869a-b074b04f3582",
+		"name": "Rewards API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "49089484",
+		"_collection_link": "https://anikettc04-3624822.postman.co/workspace/Aniket's-Workspace~ce52685e-56e2-4286-8127-e80f4e0a375f/collection/49089484-4b3c7144-8ef5-4bf2-869a-b074b04f3582?action=share&source=collection_link&creator=49089484"
+	},
+	"item": [
+		{
+			"name": "http://localhost:8080/api/rewards?customerId=1&start=2025-01-01&end=2025-03-31",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/rewards?customerId=1&start=2025-01-01&end=2025-03-31",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"rewards"
+					],
+					"query": [
+						{
+							"key": "customerId",
+							"value": "1"
+						},
+						{
+							"key": "start",
+							"value": "2025-01-01"
+						},
+						{
+							"key": "end",
+							"value": "2025-03-31"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}
