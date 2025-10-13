@@ -37,23 +37,16 @@ GET http://localhost:8080/api/rewards?customerId=1&start=2025-01-01&end=2025-03-
 - Sample response (JSON):
 ```json
 {
-  "customer": {
-    "id": 1,
-    "name": "Alex Johnson",
-    "email": "alex@example.com"
+  "customerId": 1,
+  "customerName": "Pooja Pachore",
+  "monthlyRewards": {
+    "JANUARY": { "totalPoints": 120, "totalAmount": 200.0 },
+    "FEBRUARY": { "totalPoints": 150, "totalAmount": 150.0 }
   },
-  "monthlyPoints": {
-    "2025-01": 90,
-    "2025-02": 350,
-    "2025-03": 70
-  },
-  "totalPoints": 510,
   "transactions": [
-    {
-      "id": 1,
-      "amount": 120.00,
-      "purchaseDate": "2025-01-15T10:15:30"
-    }
+    { "id": 1, "amount": 120.0, "date": "2025-01-15" },
+    { "id": 2, "amount": 80.0, "date": "2025-01-20" },
+    { "id": 3, "amount": 150.0, "date": "2025-02-05" }
   ]
 }
 ```
